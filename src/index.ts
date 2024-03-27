@@ -1,9 +1,11 @@
+import "reflect-metadata";
 import * as dotenv from 'dotenv';
 import * as express from 'express';
+import Logging from './library/logging';
 import { router as v1 } from './routes/v1';
+import HttpError from './utils/http.error';
 import { Request, Response } from 'express';
 import { AppDataSource } from './data-source';
-import "reflect-metadata";
 dotenv.config();
 
 const router = express();
@@ -41,10 +43,33 @@ router.get('/', (req: Request, res: Response) => {
     });
 });
 
+//API ERROR HANDLING
+router.use((req, res, next) => {
+    const error = new Error('not found');
+    // Logging.error(error);
+    return res.status(404).json({ success: false, message: error.message });
+});
+
+//HANDEL ALL ERROR THROW BY CONTROLLERS
+router.use(function (err: any, req: any, res: any, next: any) {
+    Logging.error(err.stack);
+    if (err instanceof HttpError) {
+        return err.sendError(res);
+    } else {
+        return res.status(500).json({
+            error: {
+                title: 'general_error',
+                detail: 'An error occurred, Please retry again later',
+                code: 500,
+            },
+        });
+    }
+});
+
 AppDataSource.initialize()
   .then(async () => {
     router.listen(PORT, () => {
-        console.log("Server is running on http://localhost:" + PORT);
+        Logging.info(`Server is running on port http://localhost:${PORT}.`)
     });
-    console.log("Data Source has been initialized!");
+    Logging.info("Data Source has been initialized!");
   }).catch((error: any) => console.log(error));
