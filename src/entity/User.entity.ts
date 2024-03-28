@@ -24,6 +24,12 @@ export class User {
     @Column({ default: false })
     online: boolean
 
+    @Column({ default: false })
+    is_email_verified: boolean
+
+    @Column({ default: false })
+    is_profile_completed: boolean
+
     @Column({ type: 'timestamptz', nullable: true })
     last_login: Date
 
