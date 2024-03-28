@@ -1,10 +1,15 @@
 import { OtpType } from '../enums';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { User } from './User.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity({ name: "otps" })
 export class Otp {
     @PrimaryGeneratedColumn()
     id: number
+
+    @OneToOne(() => User, {cascade: true })
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 
     @Column({ nullable: false })
     otp: string;
@@ -12,7 +17,7 @@ export class Otp {
     @Column({ type: 'enum', enum: OtpType, nullable: true })
     status: string
 
-    @Column({ nullable: true })
+    @Column({ type: 'timestamptz', nullable: true })
     expiration: Date
 
     @CreateDateColumn()

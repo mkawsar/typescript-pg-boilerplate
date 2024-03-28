@@ -5,7 +5,7 @@ import Logging from '../library/logging';
 
 dotenv.config();
 
-const { MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_SENDER } = process.env;
+const { MAIL_HOST, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, MAIL_SENDER, NODE_ENV } = process.env;
 
 export default class MailService {
     private static instance: MailService;
@@ -67,7 +67,7 @@ export default class MailService {
         }).then(info => {
             Logging.info(`${requestID} - Mail sent successfully!!`);
             Logging.info(`${requestID} - [MailResponse]=${info.response} [MessageID]=${info.messageId}`);
-            if (process.env.NODE_ENV === 'local') {
+            if (NODE_ENV === 'dev') {
                 Logging.info(`${requestID} - Nodemailer ethereal URL: ${nodemailer.getTestMessageUrl(
                     info
                 )}`);

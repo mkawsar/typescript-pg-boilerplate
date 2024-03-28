@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 import * as jwt from 'jsonwebtoken';
 import HttpError from './http.error';
-import { AppDataSource } from '../data-source';
 import { Otp } from '../entity/Otp.entity';
+import { AppDataSource } from '../data-source';
 
 dotenv.config();
 
