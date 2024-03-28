@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import * as dotenv from 'dotenv';
-import * as express from 'express';
 import Logging from './library/logging';
 import { router as v1 } from './routes/v1';
 import HttpError from './utils/http.error';
-import { Request, Response } from 'express';
 import { AppDataSource } from './data-source';
+import express, { Request, Response } from 'express';
+
 dotenv.config();
 
 const router = express();
@@ -13,7 +13,6 @@ const router = express();
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 const { PORT = 3000 } = process.env;
-
 
 //RULES OF OUR APIS
 router.use((req, res, next) => {
@@ -67,9 +66,9 @@ router.use(function (err: any, req: any, res: any, next: any) {
 });
 
 AppDataSource.initialize()
-  .then(async () => {
-    router.listen(PORT, () => {
-        Logging.info(`Server is running on port http://localhost:${PORT}.`)
-    });
-    Logging.info("Data Source has been initialized!");
-  }).catch((error: any) => console.log(error));
+    .then(async () => {
+        router.listen(PORT, () => {
+            Logging.info(`Server is running on port http://localhost:${PORT}.`)
+        });
+        Logging.info("Data Source has been initialized!");
+    }).catch((error: any) => console.log(error));
