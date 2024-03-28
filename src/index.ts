@@ -4,6 +4,7 @@ import Logging from './library/logging';
 import { router as v1 } from './routes/v1';
 import HttpError from './utils/http.error';
 import { AppDataSource } from './data-source';
+import MailService from './services/mail.service';
 import express, { Request, Response } from 'express';
 
 dotenv.config();
@@ -12,7 +13,7 @@ const router = express();
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 
 //RULES OF OUR APIS
 router.use((req, res, next) => {
@@ -68,6 +69,16 @@ router.use(function (err: any, req: any, res: any, next: any) {
 AppDataSource.initialize()
     .then(async () => {
         router.listen(PORT, () => {
+            //MAIL SMTP CONNECTION
+        Logging.info('Connecting with SMTP Server...');
+        const mailService = MailService.getInstance();
+        if (NODE_ENV === 'dev') {
+            mailService.createLocalConnection();
+        } else if (NODE_ENV === 'production') {
+            mailService.createConnection();
+        }
+        Logging.info('SMTP Server Connected');
+        Logging.info('SMTP Connection verified');
             Logging.info(`Server is running on port http://localhost:${PORT}.`)
         });
         Logging.info("Data Source has been initialized!");
