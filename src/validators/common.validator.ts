@@ -1,4 +1,6 @@
 import { extractToken } from '../utils';
+import { User } from '../entity/User.entity';
+import { AppDataSource } from '../data-source';
 import { body, header } from 'express-validator';
 
 //TEXT FIELD VALIDATOR FUNCTION
@@ -95,5 +97,32 @@ const authorization = () => {
         );
 };
 
+// Unique eamil validation
+const uniqueEmailValidation = (field: string, message: string, options: { min: number; max: number }) => {
+    return body(field)
+        .trim()
+        .exists()
+        .notEmpty()
+        .withMessage(`The ${message} is required`)
+        .isString()
+        .bail()
+        .isLength({
+            min: options.min,
+            max: options.max,
+        })
+        .withMessage(`${message} must be between ${options.min} and ${options.max} characters`)
+        .bail()
+        .isEmail()
+        .withMessage('Email address is not valid')
+        .custom(async value => {
+            const userRepository = AppDataSource.getRepository(User);
+            await userRepository.findOne({ where: { email: value } });
+            return await Promise.reject('The email has already been taken.');
+        })
+        .customSanitizer((email) => {
+            return email.toLowerCase();
+        });
+};
+
 //EXPORT
-export { authorization, emailValidation, loginPasswordValidation, password, requiredTextField };
+export { authorization, emailValidation, loginPasswordValidation, password, requiredTextField, uniqueEmailValidation };
