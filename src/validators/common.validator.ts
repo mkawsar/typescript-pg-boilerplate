@@ -1,6 +1,4 @@
 import { extractToken } from '../utils';
-import { User } from '../entity/User.entity';
-import { AppDataSource } from '../data-source';
 import { body, header } from 'express-validator';
 
 //TEXT FIELD VALIDATOR FUNCTION
