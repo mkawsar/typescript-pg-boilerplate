@@ -17,5 +17,12 @@ _router
         password('confirm_password')
     ]), UserController.registration);
 
+_router
+    .route('/account/verification')
+    .post(validate([
+        emailValidation('email', 'email', {min: 3, max: 100}),
+        requiredTextField('otp', 'otp', { min: 2, max: 255 })
+    ]), UserController.verification);
+
 //EXPORT
 export const router = _router;
