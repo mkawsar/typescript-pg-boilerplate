@@ -1,3 +1,4 @@
+import { Role } from '../enums';
 import { extractToken } from '../utils';
 import { body, header } from 'express-validator';
 
@@ -7,7 +8,7 @@ const requiredTextField = (field: string, message: string, options: { min: numbe
         .trim()
         .exists()
         .notEmpty()
-        .withMessage(`The ${message} is required`)
+        .withMessage(`The ${message} field is required`)
         .isString()
         .bail()
         .isLength({
@@ -23,7 +24,7 @@ const emailValidation = (field: string, message: string, options: { min: number;
         .trim()
         .exists()
         .notEmpty()
-        .withMessage(`The ${message} is required`)
+        .withMessage(`The ${message} field is required`)
         .isString()
         .bail()
         .isLength({
@@ -45,7 +46,7 @@ const loginPasswordValidation = () => {
         .escape()
         .exists()
         .notEmpty()
-        .withMessage('Password address is required')
+        .withMessage('Password field is required')
         .isString()
         .isLength({
             max: 255,
@@ -95,5 +96,18 @@ const authorization = () => {
         );
 };
 
+// Role validation
+const roleValidation = (field: any) => {
+    return body(field)
+        .trim()
+        .exists()
+        .notEmpty()
+        .withMessage(`The role field is required`)
+        .isString()
+        .bail()
+        .isIn([Role.ADMIN, Role.MANAGER, Role.USER])
+        .withMessage(`Ivalidate role`)
+}
+
 //EXPORT
-export { authorization, emailValidation, loginPasswordValidation, password, requiredTextField };
+export { authorization, emailValidation, loginPasswordValidation, password, requiredTextField, roleValidation };
