@@ -18,6 +18,7 @@ const registration = async (req: Request, res: Response, next: NextFunction) => 
         const userRepository = AppDataSource.getRepository(User);
         
         const existUser = await userRepository.findOne({where: { email: email }});
+        return jsonAll<any>(res, 200, existUser)
         if (existUser) {
             throw new HttpError({
                 title: 'email_address',
