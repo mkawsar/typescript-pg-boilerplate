@@ -40,8 +40,8 @@ const emailValidation = (field: string, message: string, options: { min: number;
         });
 };
 
-const loginPasswordValidation = () => {
-    return body('password')
+const loginPasswordValidation = (field: any) => {
+    return body(field)
         .trim()
         .escape()
         .exists()

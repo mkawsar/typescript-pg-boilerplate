@@ -117,7 +117,8 @@ const verification = async (req: Request, res: Response, next: NextFunction) => 
             });
         }
         await userRepository.update(user.id, {
-            is_email_verified: true, status: Status.ACTIVE
+            is_email_verified: true, 
+            status: Status.ACTIVE
         });
         await otpRepository.delete(getOTP.id);
         return jsonOne<string>(res, 200, 'Email verification successfull.');
