@@ -1,11 +1,11 @@
+import { compare } from 'bcrypt';
 import { generateJWT } from '../utils';
-import { hash, compare } from 'bcrypt';
+import { jsonOne } from '../utils/general';
 import HttpError from '../utils/http.error';
-import { IAuth } from '../interfaces';
 import { User } from '../entity/User.entity';
+import { IAuth, IUser } from '../interfaces';
 import { AppDataSource } from '../data-source';
 import { matchedData } from 'express-validator';
-import { jsonAll, jsonOne } from '../utils/general';
 import { Request, Response, NextFunction } from 'express';
 
 // Generate access token
@@ -22,9 +22,7 @@ const generateAccessToken = async (user: User) => {
             audience: 'root'
         }
     );
-    return {
-        token: token
-    };
+    return { token: token };
 }
 
 const login = async (req: Request, res: Response, next: NextFunction): Promise<IAuth> => {
@@ -75,5 +73,13 @@ const login = async (req: Request, res: Response, next: NextFunction): Promise<I
     }
 };
 
+const getAuthUser = async (req: Request, res: Response, next: NextFunction) => {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({
+        where: {id: req['authentication']?.id}
+    });
+    return jsonOne<IUser>(res, 200, user);
 
-export default { login };
+};
+
+export default { login, getAuthUser };

@@ -15,8 +15,7 @@ const requiredTextField = (field: string, message: string, options: { min: numbe
             min: options.min,
             max: options.max,
         })
-        .withMessage(`${message} must be between ${options.min} and ${options.max} characters`)
-        ;
+        .withMessage(`${message} must be between ${options.min} and ${options.max} characters`);
 };
 
 const emailValidation = (field: string, message: string, options: { min: number; max: number }) => {
@@ -91,9 +90,7 @@ const authorization = () => {
             }
         })
         .isJWT()
-        .withMessage(
-            'Invalid Authorization header, must be Bearer authorization'
-        );
+        .withMessage('Invalid Authorization header, must be Bearer authorization');
 };
 
 // Role validation
@@ -106,8 +103,8 @@ const roleValidation = (field: any) => {
         .isString()
         .bail()
         .isIn([Role.ADMIN, Role.MANAGER, Role.USER])
-        .withMessage(`Ivalidate role`)
-}
+        .withMessage(`Ivalidate role`);
+};
 
 //EXPORT
 export { authorization, emailValidation, loginPasswordValidation, password, requiredTextField, roleValidation };

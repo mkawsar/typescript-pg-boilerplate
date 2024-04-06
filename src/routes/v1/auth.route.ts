@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import auth from '../../middleware/auth.middleware';
 import validate from '../../middleware/validation.middleware';
 import AuthController from '../../controllers/auth.controller';
 import { emailValidation, loginPasswordValidation } from '../../validators/common.validator';
@@ -11,6 +12,10 @@ _router
         emailValidation('email', 'email', {min: 3, max: 100}),
         loginPasswordValidation('password')
     ]), AuthController.login);
+
+_router
+    .route('/user')
+    .get(auth, AuthController.getAuthUser);
 
 //EXPORT
 export const router = _router;

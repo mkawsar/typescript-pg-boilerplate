@@ -5,7 +5,6 @@ import { Otp } from '../entity/Otp.entity';
 import { AppDataSource } from '../data-source';
 
 dotenv.config();
-
 const { JWT_SECRET = '' } = process.env;
 
 // Validate auth token
@@ -20,7 +19,7 @@ const validateToken = function (token: string): Object {
             code: 400,
         });
     }
-}
+};
 
 
 // Generate OTP
@@ -30,9 +29,8 @@ const generateOTP = function (len: number): string {
     for (let i = 0; i < len; i++) {
         otp += digits[Math.floor(Math.random() * 10)];
     }
-
     return otp;
-}
+};
 
 // verify otp
 const verifyOtp = async function (userId: any, otp: string, type: string): Promise<any> {
@@ -43,12 +41,10 @@ const verifyOtp = async function (userId: any, otp: string, type: string): Promi
     });
 
     let date = new Date(existOtp.expiration);
-
     const currentDate = new Date();
     if (!existOtp && date > currentDate) {
         return null;
     }
-
     return existOtp.id;
 };
 

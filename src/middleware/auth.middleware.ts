@@ -6,7 +6,8 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers.authorization;
         const payload = validateToken(token);
-        if (payload['tokenType'] !== 'access') {
+        
+        if (payload['token'] !== 'access') {
             throw new HttpError({
                 title: 'unauthorized',
                 detail: 'Invalid Authorization header',
@@ -14,7 +15,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
             });
         }
 
-        req['token_payload'] = payload;
+        req['authentication'] = payload;
         next();
     } catch (error) {
         if (error.opts?.title === 'invalid_token') {

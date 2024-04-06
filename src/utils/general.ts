@@ -1,5 +1,3 @@
-import { Response } from '../interfaces';
-
 // Response for list
 const jsonAll = function<Res>(res: any, status: number, data: Res | Array<Res>, meta: object = {}) {
     return res.status(status).json({
