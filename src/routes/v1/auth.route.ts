@@ -17,5 +17,9 @@ _router
     .route('/user')
     .get(auth, AuthController.getAuthUser);
 
+_router
+    .route('/logout')
+    .delete(auth, AuthController.logout);
+
 //EXPORT
 export const router = _router;

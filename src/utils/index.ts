@@ -63,6 +63,18 @@ const generateJWT = function (payload: object = {}, options: object = {}): strin
     );
 };
 
+const logoutGenerateJWT = function (payload: object = {}, options: object = {}): string {
+    const privateKey: any = JWT_SECRET;
+    const defaultOptions: object = {
+        expiresIn: '1s',
+    };
+    return jwt.sign(
+        payload,
+        privateKey,
+        Object.assign(defaultOptions, options)
+    );
+};
+
 //USED TO GENERATE JWT WITH PAYLOAD AND OPTIONS AS PARAMETERS.
 const extractToken = function (token: string): string | null {
     if (token?.startsWith('Bearer ')) {
@@ -71,4 +83,4 @@ const extractToken = function (token: string): string | null {
     return null;
 };
 
-export { extractToken, generateJWT, generateOTP, validateToken, verifyOtp };
+export { extractToken, generateJWT, generateOTP, validateToken, verifyOtp, logoutGenerateJWT };

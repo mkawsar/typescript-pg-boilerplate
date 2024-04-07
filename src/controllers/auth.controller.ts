@@ -1,12 +1,12 @@
 import { compare } from 'bcrypt';
-import { generateJWT } from '../utils';
-import { jsonAll, jsonOne } from '../utils/general';
+import { jsonOne } from '../utils/general';
 import HttpError from '../utils/http.error';
 import { User } from '../entity/User.entity';
 import { IAuth, IUser } from '../interfaces';
 import { AppDataSource } from '../data-source';
 import { matchedData } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
+import { generateJWT, logoutGenerateJWT } from '../utils';
 
 // Generate access token
 const generateAccessToken = async (user: User) => {
@@ -23,7 +23,23 @@ const generateAccessToken = async (user: User) => {
         }
     );
     return { token: token };
-}
+};
+
+const logoutgenerateAccessToken = async (user: User) => {
+    const token = logoutGenerateJWT(
+        {
+            id: user?.id,
+            role: user?.role,
+            token: 'access'
+        },
+        {
+            issuer: user?.email,
+            subject: user?.email,
+            audience: 'root'
+        }
+    );
+    return { token: token };
+};
 
 const login = async (req: Request, res: Response, next: NextFunction): Promise<IAuth> => {
     try {
@@ -89,7 +105,20 @@ const getAuthUser = async (req: Request, res: Response, next: NextFunction) => {
         where: {id: req['authentication']?.id}
     });
     return jsonOne<IUser>(res, 200, user);
-
 };
 
-export default { login, getAuthUser };
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({
+        where: {id: req['authentication']?.id}
+    });
+    await userRepository.update(user?.id, {
+        online: false
+    });
+    const accesstoken = await logoutgenerateAccessToken(user);
+    const response = { token: accesstoken.token };
+
+    return jsonOne<any>(res, 200, response);
+};
+
+export default { login, getAuthUser, logout };

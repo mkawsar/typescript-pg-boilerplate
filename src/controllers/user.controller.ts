@@ -1,11 +1,11 @@
 import { hash } from 'bcrypt';
 import { IUser } from '../interfaces';
+import { generateOTP } from '../utils';
 import { Otp } from '../entity/Otp.entity';
+import { Status, OtpType } from '../enums';
 import HttpError from '../utils/http.error';
 import { User } from '../entity/User.entity';
 import { AppDataSource } from '../data-source';
-import { Status, OtpType, Role } from '../enums';
-import { verifyOtp, generateOTP } from '../utils';
 import MailService from '../services/mail.service';
 import { jsonAll, jsonOne } from '../utils/general';
 import { Request, Response, NextFunction } from 'express';
