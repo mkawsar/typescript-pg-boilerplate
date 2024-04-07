@@ -1,6 +1,6 @@
 import { compare } from 'bcrypt';
 import { generateJWT } from '../utils';
-import { jsonOne } from '../utils/general';
+import { jsonAll, jsonOne } from '../utils/general';
 import HttpError from '../utils/http.error';
 import { User } from '../entity/User.entity';
 import { IAuth, IUser } from '../interfaces';
@@ -48,7 +48,7 @@ const login = async (req: Request, res: Response, next: NextFunction): Promise<I
         }
 
         //Password compare
-        const isValidPassword = compare(password, user?.password);
+        const isValidPassword = await compare(String(password), String(user.password));
         //CHECK FOR USER VERIFIED AND EXISTING
         if (!user.is_email_verified) {
             throw new HttpError({
@@ -66,7 +66,17 @@ const login = async (req: Request, res: Response, next: NextFunction): Promise<I
 
         // Get access token
         const accesstoken = await generateAccessToken(user);
-        const response = { user, token: accesstoken.token };
+        await userRepository.update(user?.id, {
+            last_login: new Date(),
+            online: true
+        });
+
+        const online = await userRepository.findOne({
+            where: { id: user?.id }
+        });
+
+        const response = { user: online, token: accesstoken.token };
+
         return jsonOne<IAuth>(res, 200, response);
     } catch (err) {
         next(err);

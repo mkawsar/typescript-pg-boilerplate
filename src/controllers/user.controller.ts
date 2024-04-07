@@ -127,4 +127,32 @@ const verification = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-export default { registration, verification };
+// Update auth profile update
+const userProfileUpdate = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const authID = req['authentication']?.id;
+        const { name } = req.body;
+        // User Repository
+        const userRepository = AppDataSource.getRepository(User);
+        //Find user
+        const user = await userRepository.findOne({where: { id: authID }});
+
+        if (!user) {
+            throw new HttpError({
+                title: 'not_found',
+                detail: 'The request data not found',
+                code: 404,
+            });
+        }
+
+        await userRepository.update(user?.id, {
+            name: name
+        });
+
+        return jsonOne<string>(res, 200, 'The update request updated has been successfully.');
+    } catch (err) {
+        next(err);
+    }
+};
+
+export default { registration, verification, userProfileUpdate };

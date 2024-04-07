@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '../../controllers';
+import auth from '../../middleware/auth.middleware';
 import validate from '../../middleware/validation.middleware';
 import { emailValidation, requiredTextField, password, roleValidation } from '../../validators/common.validator';
 
@@ -23,6 +24,12 @@ _router
         emailValidation('email', 'email', {min: 3, max: 100}),
         requiredTextField('otp', 'otp', { min: 2, max: 255 })
     ]), UserController.verification);
+
+_router
+    .route('/profile/update')
+    .put(validate([
+        requiredTextField('name', 'Name', { min: 2, max: 255 })
+    ]), auth, UserController.userProfileUpdate);
 
 //EXPORT
 export const router = _router;
