@@ -70,15 +70,15 @@ AppDataSource.initialize()
     .then(async () => {
         router.listen(PORT, () => {
             //MAIL SMTP CONNECTION
-        Logging.info('Connecting with SMTP Server...');
-        const mailService = MailService.getInstance();
-        if (NODE_ENV === 'dev') {
-            mailService.createLocalConnection();
-        } else if (NODE_ENV === 'production') {
-            mailService.createConnection();
-        }
-        Logging.info('SMTP Server Connected');
-        Logging.info('SMTP Connection verified');
+            Logging.info('Connecting with SMTP Server...');
+            const mailService = MailService.getInstance();
+            if (NODE_ENV === 'dev') {
+                mailService.createLocalConnection();
+            } else if (NODE_ENV === 'production') {
+                mailService.createConnection();
+            }
+            Logging.info('SMTP Server Connected');
+            Logging.info('SMTP Connection verified');
             Logging.info(`Server is running on port http://localhost:${PORT}.`)
         });
         Logging.info("Data Source has been initialized!");
