@@ -79,6 +79,7 @@ Ensure you have the following software installed on your machine:
     * POST `/api/v1/user/account/verification`
     * POST `/api/v1/auth/login`
     * GET `/api/v1/auth/user`
+    * GET `/api/v1/user/list`
     * DELETE `/api/v1/auth/logout`
 
 ## Contributing
