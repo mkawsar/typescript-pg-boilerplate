@@ -155,4 +155,32 @@ const userProfileUpdate = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-export default { registration, verification, userProfileUpdate };
+const getUserList = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let pageOptions: { page: number, limit: number } = {
+            page: Number(req.query.page) || 1,
+            limit: Number(req.query.limit) || 10
+        };
+        // User Repository
+        const userRepository = AppDataSource.getRepository(User);
+        const total = await userRepository.count();
+        const users = await userRepository
+            .createQueryBuilder('user')
+            .limit(pageOptions.limit * 1)
+            .skip((pageOptions.page - 1) * pageOptions.limit)
+            .getMany();
+            
+        const meta = {
+            total: total,
+            limit: pageOptions.limit,
+            totalPage: Math.ceil(total / pageOptions.limit),
+            currentPage: pageOptions.page
+        };
+    
+        return jsonAll<any>(res, 200, users, meta);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export default { getUserList, registration, verification, userProfileUpdate };

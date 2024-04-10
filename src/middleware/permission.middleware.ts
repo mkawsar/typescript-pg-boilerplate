@@ -1,9 +1,10 @@
+import { jsonAll } from '../utils/general';
 import HttpError from '../utils/http.error';
 import { NextFunction, Response, Request } from 'express';
 
 const permission = function (allowRules: Array<string>) {
     return async function (req: Request, res: Response, next: NextFunction) {
-        const payload = req['tokenPayload'];
+        const payload = req['authentication'];
         if (allowRules.includes(payload['role'])) {
             next();
         } else {
