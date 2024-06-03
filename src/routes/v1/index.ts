@@ -1,5 +1,6 @@
 import { router as UserRouter } from './user.route';
 import { router as AuthRouter } from './auth.route';
+import { router as AgentRouter } from './agent.route';
 import { Request, Response, NextFunction, Router } from 'express';
 
 const _router: Router = Router({
@@ -20,5 +21,6 @@ _router.route('/v1/health/check').get(function (req: Request, res: Response) {
 
 _router.use('/v1/auth', AuthRouter);
 _router.use('/v1/user', UserRouter);
+_router.use('/v1/agent', AgentRouter);
 
 export const router = _router;

@@ -81,6 +81,8 @@ Ensure you have the following software installed on your machine:
     * GET `/api/v1/auth/user`
     * GET `/api/v1/user/list`
     * DELETE `/api/v1/auth/logout`
+6. Get all route list
+    * GET `/routes`
 
 ## Contributing
 Contributions are welcome! Follow these steps to contribute:
