@@ -1,10 +1,10 @@
 import { Router } from 'express';
+import { Role } from '../../enums';
 import { UserController } from '../../controllers';
 import auth from '../../middleware/auth.middleware';
 import validate from '../../middleware/validation.middleware';
-import { emailValidation, requiredTextField, password, roleValidation } from '../../validators/common.validator';
 import permission from '../../middleware/permission.middleware';
-import { Role } from '../../enums';
+import { emailValidation, requiredTextField, password, roleValidation } from '../../validators/common.validator';
 
 
 const _router = Router();
