@@ -11,4 +11,4 @@
         "entitiesDir": "./src/entity",
         "migrationsDir": "./src/migration"
     }
-  }
+}
