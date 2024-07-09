@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 export default class Logging {
     public static log = (args: any) => this.info(args)
@@ -10,4 +10,4 @@ export default class Logging {
 
     public static error = (args: any) => console.log(chalk.red(`[${new Date().toLocaleString()}][INFO]`),
         typeof args === 'string' ? chalk.redBright(args) : args);
-}
+};

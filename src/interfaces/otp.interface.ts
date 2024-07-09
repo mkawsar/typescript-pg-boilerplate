@@ -3,4 +3,4 @@ export interface IOtp {
     type: string;
     otp: string;
     expiration: Date | null;
-}
+};

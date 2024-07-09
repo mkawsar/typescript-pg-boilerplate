@@ -14,7 +14,6 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
                 code: 401,
             });
         }
-
         req['authentication'] = payload;
         next();
     } catch (error) {
@@ -24,12 +23,12 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
                     title: 'unauthorized',
                     detail: 'Invalid Authorization header',
                     code: 401,
-                })
+                }),
             );
         } else {
             next(error);
         }
     }
-}
+};
 
 export default auth;

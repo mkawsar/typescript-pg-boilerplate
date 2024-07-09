@@ -4,4 +4,4 @@ export interface IUser {
     role: string;
     is_email_verified: boolean;
     is_profile_completed: boolean;
-}
+};
