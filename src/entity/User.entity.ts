@@ -4,10 +4,10 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Entity({ name: "users" })
 export class User {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column()
-    name: string
+    name: string;
 
     @Column({ nullable: false })
     email: string;
@@ -19,19 +19,19 @@ export class User {
     role: string;
 
     @Column({ type: 'enum', enum: Status, default: Status.INACTIVE })
-    status: string
+    status: string;
 
     @Column({ default: false })
-    online: boolean
+    online: boolean;
 
     @Column({ default: false })
-    is_email_verified: boolean
+    is_email_verified: boolean;
 
     @Column({ default: false })
-    is_profile_completed: boolean
+    is_profile_completed: boolean;
 
     @Column({ type: 'timestamptz', nullable: true })
-    last_login: Date
+    last_login: Date;
 
     @CreateDateColumn()
     created_at: Date;

@@ -1,19 +1,24 @@
-import {Status} from '../enums';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Status } from '../enums';
+import { User } from './User.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
 
 @Entity({ name: 'agents' })
 export class Agent {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
-    @Column({nullable: false})
-    uuid: string
+    @Column({ nullable: false })
+    uuid: string;
 
     @Column()
-    name: string
+    name: string;
 
     @Column({ type: 'enum', enum: Status, default: Status.INACTIVE })
-    status: string
+    status: string;
+
+    @OneToOne(() => User)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 
     @CreateDateColumn()
     created_at: Date;
