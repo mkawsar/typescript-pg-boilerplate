@@ -5,7 +5,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Entity({ name: "otps" })
 export class Otp {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @OneToOne(() => User, {cascade: true })
     @JoinColumn({ name: 'user_id' })
@@ -15,7 +15,7 @@ export class Otp {
     otp: string;
 
     @Column({ type: 'enum', enum: OtpType, nullable: true })
-    status: string
+    status: string;
 
     @Column({ type: 'timestamptz', nullable: true })
     expiration: Date
